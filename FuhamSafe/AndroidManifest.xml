@@ -13,6 +13,15 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 
     <application
         android:allowBackup="true"
@@ -36,6 +45,17 @@
     	<activity android:name="com.yang.fuhamsafe.activity.TheftproofActivity"></activity>
     	<activity android:name="com.yang.fuhamsafe.activity.GuideActivity"></activity>
     	<activity android:name="com.yang.fuhamsafe.activity.ContactsActivity"></activity>
+    	<!-- 设置activity为透明 -->
+    	<activity android:name="com.yang.fuhamsafe.activity.SetAddressLocationActivity"
+    	    android:theme="@android:style/Theme.Translucent.NoTitleBar"
+    	    ></activity>
+    	<activity android:name="com.yang.fuhamsafe.activity.SmokeActivity"
+    	    android:theme="@android:style/Theme.Translucent.NoTitleBar"
+    	    ></activity>
+    	<activity android:name="com.yang.fuhamsafe.activity.HelpActivity"
+    	    android:theme="@android:style/Theme.Translucent.NoTitleBar"
+    	    ></activity>
+    	<!-- 接收开机启动的广播 -->
     	<receiver android:name="com.yang.fuhamsafe.receiver.BootReceiver">
     	    <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -43,6 +63,32 @@
                 
             </intent-filter>
     	</receiver>
+    	<!-- 接收发送短信的广播，优先级可以设置为整形的最大值 -->
+    	<receiver android:name="com.yang.fuhamsafe.receiver.SmsReceiver">
+    	    <intent-filter 
+    	        android:priority="2147483647"
+    	        >
+    	        <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
+    	    </intent-filter>
+    	</receiver>
+    	<service android:name="com.yang.fuhamsafe.service.InPhoneService"></service>
+    	<service android:name="com.yang.fuhamsafe.service.LocationService"></service>
+    	<service android:name="com.yang.fuhamsafe.service.DesktopService"></service>
+    	<!-- 设备管理器设置 -->
+    	<receiver
+            android:name="com.yang.fuhamsafe.receiver.AdminReceiver"
+            android:description="@string/sample_device_admin_description"
+            android:label="@string/sample_device_admin"
+            android:permission="android.permission.BIND_DEVICE_ADMIN" >
+            <meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/device_admin_sample" />
+
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+            </intent-filter>
+        </receiver>
+	
     </application>
 
 </manifest>
